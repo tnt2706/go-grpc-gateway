@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package  sample;
+
+option go_package = "./pb";
+
+message StringRequest {
+  string welcome = 1;
+}
+
+message StringResponse {
+  string result = 1;
+}
+
+service SampleService {
+  rpc Sum(StringRequest) returns (StringResponse) {}
+}
