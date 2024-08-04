@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SampleServiceClient interface {
-	Sum(ctx context.Context, in *StringRequest, opts ...grpc.CallOption) (*StringResponse, error)
+	Print(ctx context.Context, in *PrintRequest, opts ...grpc.CallOption) (*PrintResponse, error)
 }
 
 type sampleServiceClient struct {
@@ -29,9 +29,9 @@ func NewSampleServiceClient(cc grpc.ClientConnInterface) SampleServiceClient {
 	return &sampleServiceClient{cc}
 }
 
-func (c *sampleServiceClient) Sum(ctx context.Context, in *StringRequest, opts ...grpc.CallOption) (*StringResponse, error) {
-	out := new(StringResponse)
-	err := c.cc.Invoke(ctx, "/sample.SampleService/Sum", in, out, opts...)
+func (c *sampleServiceClient) Print(ctx context.Context, in *PrintRequest, opts ...grpc.CallOption) (*PrintResponse, error) {
+	out := new(PrintResponse)
+	err := c.cc.Invoke(ctx, "/sample.SampleService/Print", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *sampleServiceClient) Sum(ctx context.Context, in *StringRequest, opts .
 // All implementations must embed UnimplementedSampleServiceServer
 // for forward compatibility
 type SampleServiceServer interface {
-	Sum(context.Context, *StringRequest) (*StringResponse, error)
+	Print(context.Context, *PrintRequest) (*PrintResponse, error)
 	mustEmbedUnimplementedSampleServiceServer()
 }
 
@@ -50,8 +50,8 @@ type SampleServiceServer interface {
 type UnimplementedSampleServiceServer struct {
 }
 
-func (UnimplementedSampleServiceServer) Sum(context.Context, *StringRequest) (*StringResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
+func (UnimplementedSampleServiceServer) Print(context.Context, *PrintRequest) (*PrintResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Print not implemented")
 }
 func (UnimplementedSampleServiceServer) mustEmbedUnimplementedSampleServiceServer() {}
 
@@ -66,20 +66,20 @@ func RegisterSampleServiceServer(s grpc.ServiceRegistrar, srv SampleServiceServe
 	s.RegisterService(&SampleService_ServiceDesc, srv)
 }
 
-func _SampleService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StringRequest)
+func _SampleService_Print_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PrintRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SampleServiceServer).Sum(ctx, in)
+		return srv.(SampleServiceServer).Print(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sample.SampleService/Sum",
+		FullMethod: "/sample.SampleService/Print",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SampleServiceServer).Sum(ctx, req.(*StringRequest))
+		return srv.(SampleServiceServer).Print(ctx, req.(*PrintRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,8 +92,8 @@ var SampleService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*SampleServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Sum",
-			Handler:    _SampleService_Sum_Handler,
+			MethodName: "Print",
+			Handler:    _SampleService_Print_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

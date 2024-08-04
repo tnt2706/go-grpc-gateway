@@ -5,8 +5,8 @@ package  calculator;
 option go_package = "./pb";
 
 message SumRequest {
-  int32 number_ = 1;
-  int32 b = 2;
+  int32 number_1 = 1;
+  int32 number_2 = 2;
 }
 
 message SumResponse {

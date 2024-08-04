@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	pb "assignment/pkg/calculator/pb"
+	"grpc-gateway/pkg/generate/pb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -36,6 +36,6 @@ func SumTwo() {
 
 	conn := NewClient("0.0.0.0:6903", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
-	sum(conn, &pb.SumRequest{FirstNumber: 10, SecondNumber: 20})
-	sum(conn, &pb.SumRequest{FirstNumber: 20, SecondNumber: 30})
+	sum(conn, &pb.SumRequest{Number_1: 10, Number_2: 20})
+	sum(conn, &pb.SumRequest{Number_1: 20, Number_2: 30})
 }

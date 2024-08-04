@@ -1,4 +1,4 @@
-.PHONY:	install gen-grpc
+.PHONY:	install gen-grpc server
 
 install:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
@@ -13,3 +13,6 @@ gen-grpc:
 	protoc --go_out=pkg/generate --go_opt=Mprotos/*.proto=pb \
     --go-grpc_out=pkg/generate --go-grpc_opt=Mprotos/*.proto=pb \
     internal/proto/*.proto
+
+server:
+	go run cmd/main.go

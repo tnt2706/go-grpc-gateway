@@ -4,14 +4,14 @@ package  sample;
 
 option go_package = "./pb";
 
-message StringRequest {
+message PrintRequest {
   string welcome = 1;
 }
 
-message StringResponse {
+message PrintResponse {
   string result = 1;
 }
 
 service SampleService {
-  rpc Sum(StringRequest) returns (StringResponse) {}
+  rpc Print(PrintRequest) returns (PrintResponse) {}
 }
