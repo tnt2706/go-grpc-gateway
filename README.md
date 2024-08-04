@@ -34,3 +34,8 @@ internal/proto/*.proto
 ```
 
 ![alt text](./images/generate_custom.png)
+
+- **Generate**
+
+    - [Buf](https://buf.build/docs/tutorials/getting-started-with-buf-cli#update-directory-path-and-build-module)
+    - [protoc](https://grpc.io/docs/languages/go/quickstart/)

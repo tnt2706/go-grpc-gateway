@@ -1,0 +1,104 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "service/calculator_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "CalculatorService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/sum": {
+      "post": {
+        "operationId": "CalculatorService_Sum",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/shopdevSumResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/shopdevSumRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CalculatorService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "shopdevSumRequest": {
+      "type": "object",
+      "properties": {
+        "number1": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "number2": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "shopdevSumResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}

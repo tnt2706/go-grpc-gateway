@@ -3,9 +3,10 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"grpc-gateway/pkg/generate/pb"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"grpc-gateway/pkg/pb"
 	"log"
-	"net"
+	"net/http"
 
 	"google.golang.org/grpc"
 )
@@ -29,20 +30,19 @@ func (s *sampleService) Print(ctx context.Context, in *pb.PrintRequest) (*pb.Pri
 }
 
 func StartGrpcServer() {
-	listener, err := net.Listen("tcp", "0.0.0.0:6903")
-
-	if err != nil {
-		panic(err)
-	}
-
 	s := grpc.NewServer()
 	pb.RegisterCalculatorServiceServer(s, &calculatorService{})
 	pb.RegisterSampleServiceServer(s, &sampleService{})
-	log.Printf("🚀 Running listening at %v", listener.Addr())
 
-	if err := s.Serve(listener); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	gwmux := runtime.NewServeMux()
+	gwServer := &http.Server{
+		Addr:    ":8091",
+		Handler: gwmux,
 	}
+
+	log.Println("Serving gRPC-Gateway on http://0.0.0.0:8091")
+	log.Fatalln(gwServer.ListenAndServe())
+
 }
 
 func main() {

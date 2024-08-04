@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"grpc-gateway/pkg/generate/pb"
+	"grpc-gateway/pkg/pb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

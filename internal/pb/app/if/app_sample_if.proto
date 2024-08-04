@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package  sample;
+package shopdev;
 
 option go_package = "./pb";
 
@@ -10,8 +10,4 @@ message PrintRequest {
 
 message PrintResponse {
   string result = 1;
-}
-
-service SampleService {
-  rpc Print(PrintRequest) returns (PrintResponse) {}
 }

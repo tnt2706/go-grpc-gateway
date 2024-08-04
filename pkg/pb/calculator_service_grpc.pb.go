@@ -31,7 +31,7 @@ func NewCalculatorServiceClient(cc grpc.ClientConnInterface) CalculatorServiceCl
 
 func (c *calculatorServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
 	out := new(SumResponse)
-	err := c.cc.Invoke(ctx, "/calculator.CalculatorService/Sum", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/shopdev.CalculatorService/Sum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -39,21 +39,19 @@ func (c *calculatorServiceClient) Sum(ctx context.Context, in *SumRequest, opts 
 }
 
 // CalculatorServiceServer is the server API for CalculatorService service.
-// All implementations must embed UnimplementedCalculatorServiceServer
+// All implementations should embed UnimplementedCalculatorServiceServer
 // for forward compatibility
 type CalculatorServiceServer interface {
 	Sum(context.Context, *SumRequest) (*SumResponse, error)
-	mustEmbedUnimplementedCalculatorServiceServer()
 }
 
-// UnimplementedCalculatorServiceServer must be embedded to have forward compatible implementations.
+// UnimplementedCalculatorServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedCalculatorServiceServer struct {
 }
 
 func (UnimplementedCalculatorServiceServer) Sum(context.Context, *SumRequest) (*SumResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
 }
-func (UnimplementedCalculatorServiceServer) mustEmbedUnimplementedCalculatorServiceServer() {}
 
 // UnsafeCalculatorServiceServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to CalculatorServiceServer will
@@ -76,7 +74,7 @@ func _CalculatorService_Sum_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/calculator.CalculatorService/Sum",
+		FullMethod: "/shopdev.CalculatorService/Sum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalculatorServiceServer).Sum(ctx, req.(*SumRequest))
@@ -88,7 +86,7 @@ func _CalculatorService_Sum_Handler(srv interface{}, ctx context.Context, dec fu
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CalculatorService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "calculator.CalculatorService",
+	ServiceName: "shopdev.CalculatorService",
 	HandlerType: (*CalculatorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -97,5 +95,5 @@ var CalculatorService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "internal/proto/calculator_service.proto",
+	Metadata: "service/calculator_service.proto",
 }
