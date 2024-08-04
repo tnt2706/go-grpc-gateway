@@ -12,7 +12,14 @@ install:
 gen-grpc:
 	protoc --go_out=pkg/generate --go_opt=Mprotos/*.proto=pb \
     --go-grpc_out=pkg/generate --go-grpc_opt=Mprotos/*.proto=pb \
-    internal/proto/*.proto
+    internal/pb/service/*.proto
 
 server:
 	go run cmd/main.go
+
+
+gen-grpc-gateway:
+	protoc -I . --grpc-gateway_out pkg/generate \
+    --grpc-gateway_opt paths=source_relative \
+    --grpc-gateway_opt generate_unbound_methods=true \
+    internal/proto/*.proto

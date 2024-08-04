@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package  shopdev;
+
+option go_package = "./pb";
+
+message SuccessResponse {
+    bool is_success = 1;
+}

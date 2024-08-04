@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package  shopdev
+
+option go_package = "./pb";
+
+import "app/if/app_calculator_if.proto";
+
+
+service CalculatorService {
+  rpc Sum(SumRequest) returns (SumResponse){}
+}
