@@ -3,16 +3,14 @@ syntax = "proto3";
 package shopdev;
 
 option go_package = "./pb";
-
 import "app/if/app_calculator_if.proto";
-
 import "google/api/annotations.proto";
 
-service CalculatorService {
-  rpc Sum(SumRequest) returns (SumResponse){
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply) {
     option (google.api.http) = {
-        post: "/v1/sum"
-        body: "*"
+      post: "/v1/example/echo"
+      body: "*"
     };
   }
 }

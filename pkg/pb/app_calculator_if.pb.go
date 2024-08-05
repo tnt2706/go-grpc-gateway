@@ -20,17 +20,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type SumRequest struct {
+// The request message containing the user's name
+type HelloRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Number_1 int32 `protobuf:"varint,1,opt,name=number_1,json=number1,proto3" json:"number_1,omitempty"`
-	Number_2 int32 `protobuf:"varint,2,opt,name=number_2,json=number2,proto3" json:"number_2,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 }
 
-func (x *SumRequest) Reset() {
-	*x = SumRequest{}
+func (x *HelloRequest) Reset() {
+	*x = HelloRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_app_if_app_calculator_if_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -38,13 +38,13 @@ func (x *SumRequest) Reset() {
 	}
 }
 
-func (x *SumRequest) String() string {
+func (x *HelloRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SumRequest) ProtoMessage() {}
+func (*HelloRequest) ProtoMessage() {}
 
-func (x *SumRequest) ProtoReflect() protoreflect.Message {
+func (x *HelloRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_app_if_app_calculator_if_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -56,35 +56,29 @@ func (x *SumRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SumRequest.ProtoReflect.Descriptor instead.
-func (*SumRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
+func (*HelloRequest) Descriptor() ([]byte, []int) {
 	return file_app_if_app_calculator_if_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SumRequest) GetNumber_1() int32 {
+func (x *HelloRequest) GetName() string {
 	if x != nil {
-		return x.Number_1
+		return x.Name
 	}
-	return 0
+	return ""
 }
 
-func (x *SumRequest) GetNumber_2() int32 {
-	if x != nil {
-		return x.Number_2
-	}
-	return 0
-}
-
-type SumResponse struct {
+// The response message containing the greetings
+type HelloReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Result int32 `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 }
 
-func (x *SumResponse) Reset() {
-	*x = SumResponse{}
+func (x *HelloReply) Reset() {
+	*x = HelloReply{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_app_if_app_calculator_if_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -92,13 +86,13 @@ func (x *SumResponse) Reset() {
 	}
 }
 
-func (x *SumResponse) String() string {
+func (x *HelloReply) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SumResponse) ProtoMessage() {}
+func (*HelloReply) ProtoMessage() {}
 
-func (x *SumResponse) ProtoReflect() protoreflect.Message {
+func (x *HelloReply) ProtoReflect() protoreflect.Message {
 	mi := &file_app_if_app_calculator_if_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -110,16 +104,16 @@ func (x *SumResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SumResponse.ProtoReflect.Descriptor instead.
-func (*SumResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use HelloReply.ProtoReflect.Descriptor instead.
+func (*HelloReply) Descriptor() ([]byte, []int) {
 	return file_app_if_app_calculator_if_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SumResponse) GetResult() int32 {
+func (x *HelloReply) GetMessage() string {
 	if x != nil {
-		return x.Result
+		return x.Message
 	}
-	return 0
+	return ""
 }
 
 var File_app_if_app_calculator_if_proto protoreflect.FileDescriptor
@@ -127,15 +121,13 @@ var File_app_if_app_calculator_if_proto protoreflect.FileDescriptor
 var file_app_if_app_calculator_if_proto_rawDesc = []byte{
 	0x0a, 0x1e, 0x61, 0x70, 0x70, 0x2f, 0x69, 0x66, 0x2f, 0x61, 0x70, 0x70, 0x5f, 0x63, 0x61, 0x6c,
 	0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x5f, 0x69, 0x66, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x12, 0x07, 0x73, 0x68, 0x6f, 0x70, 0x64, 0x65, 0x76, 0x22, 0x42, 0x0a, 0x0a, 0x53, 0x75, 0x6d,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x19, 0x0a, 0x08, 0x6e, 0x75, 0x6d, 0x62, 0x65,
-	0x72, 0x5f, 0x31, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x6e, 0x75, 0x6d, 0x62, 0x65,
-	0x72, 0x31, 0x12, 0x19, 0x0a, 0x08, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x5f, 0x32, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x32, 0x22, 0x25, 0x0a,
-	0x0b, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06,
-	0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x72, 0x65,
-	0x73, 0x75, 0x6c, 0x74, 0x42, 0x06, 0x5a, 0x04, 0x2e, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x12, 0x07, 0x73, 0x68, 0x6f, 0x70, 0x64, 0x65, 0x76, 0x22, 0x22, 0x0a, 0x0c, 0x48, 0x65, 0x6c,
+	0x6c, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x26, 0x0a,
+	0x0a, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x6d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x42, 0x06, 0x5a, 0x04, 0x2e, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -152,8 +144,8 @@ func file_app_if_app_calculator_if_proto_rawDescGZIP() []byte {
 
 var file_app_if_app_calculator_if_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_app_if_app_calculator_if_proto_goTypes = []any{
-	(*SumRequest)(nil),  // 0: shopdev.SumRequest
-	(*SumResponse)(nil), // 1: shopdev.SumResponse
+	(*HelloRequest)(nil), // 0: shopdev.HelloRequest
+	(*HelloReply)(nil),   // 1: shopdev.HelloReply
 }
 var file_app_if_app_calculator_if_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -170,7 +162,7 @@ func file_app_if_app_calculator_if_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_app_if_app_calculator_if_proto_msgTypes[0].Exporter = func(v any, i int) any {
-			switch v := v.(*SumRequest); i {
+			switch v := v.(*HelloRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -182,7 +174,7 @@ func file_app_if_app_calculator_if_proto_init() {
 			}
 		}
 		file_app_if_app_calculator_if_proto_msgTypes[1].Exporter = func(v any, i int) any {
-			switch v := v.(*SumResponse); i {
+			switch v := v.(*HelloReply); i {
 			case 0:
 				return &v.state
 			case 1:

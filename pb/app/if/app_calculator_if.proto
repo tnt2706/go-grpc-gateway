@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package shopdev;
+
+option go_package = "./pb";
+
+// The request message containing the user's name
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}

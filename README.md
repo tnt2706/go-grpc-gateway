@@ -39,3 +39,16 @@ internal/proto/*.proto
 
     - [Buf](https://buf.build/docs/tutorials/getting-started-with-buf-cli#update-directory-path-and-build-module)
     - [protoc](https://grpc.io/docs/languages/go/quickstart/)
+    - [protobuf - generate ts/js to call grpc into resource](https://protobufjs.github.io/protobuf.js/)
+    ```bash
+        pbjs -t static-module \
+            -w commonjs \
+            -o $(APP_HOME)/server/pkg/presentation/all_in_one/ui/src/model.js \
+            ec/v1/model/*.proto \
+            ec/v1/if/*.proto 
+        pbjs -t static-module \
+            -w commonjs \
+            -o $(APP_HOME)/server/external/ma/presentation/reservation/ui/src/model.js \
+            ec/v1/model/*.proto \
+            ec/v1/if/*.proto
+    ```

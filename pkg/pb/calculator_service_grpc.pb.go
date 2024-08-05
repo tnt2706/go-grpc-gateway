@@ -14,84 +14,84 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// CalculatorServiceClient is the client API for CalculatorService service.
+// GreeterClient is the client API for Greeter service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type CalculatorServiceClient interface {
-	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error)
+type GreeterClient interface {
+	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 }
 
-type calculatorServiceClient struct {
+type greeterClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewCalculatorServiceClient(cc grpc.ClientConnInterface) CalculatorServiceClient {
-	return &calculatorServiceClient{cc}
+func NewGreeterClient(cc grpc.ClientConnInterface) GreeterClient {
+	return &greeterClient{cc}
 }
 
-func (c *calculatorServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
-	out := new(SumResponse)
-	err := c.cc.Invoke(ctx, "/shopdev.CalculatorService/Sum", in, out, opts...)
+func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
+	out := new(HelloReply)
+	err := c.cc.Invoke(ctx, "/shopdev.Greeter/SayHello", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// CalculatorServiceServer is the server API for CalculatorService service.
-// All implementations should embed UnimplementedCalculatorServiceServer
+// GreeterServer is the server API for Greeter service.
+// All implementations should embed UnimplementedGreeterServer
 // for forward compatibility
-type CalculatorServiceServer interface {
-	Sum(context.Context, *SumRequest) (*SumResponse, error)
+type GreeterServer interface {
+	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 }
 
-// UnimplementedCalculatorServiceServer should be embedded to have forward compatible implementations.
-type UnimplementedCalculatorServiceServer struct {
+// UnimplementedGreeterServer should be embedded to have forward compatible implementations.
+type UnimplementedGreeterServer struct {
 }
 
-func (UnimplementedCalculatorServiceServer) Sum(context.Context, *SumRequest) (*SumResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
+func (UnimplementedGreeterServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
 
-// UnsafeCalculatorServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to CalculatorServiceServer will
+// UnsafeGreeterServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GreeterServer will
 // result in compilation errors.
-type UnsafeCalculatorServiceServer interface {
-	mustEmbedUnimplementedCalculatorServiceServer()
+type UnsafeGreeterServer interface {
+	mustEmbedUnimplementedGreeterServer()
 }
 
-func RegisterCalculatorServiceServer(s grpc.ServiceRegistrar, srv CalculatorServiceServer) {
-	s.RegisterService(&CalculatorService_ServiceDesc, srv)
+func RegisterGreeterServer(s grpc.ServiceRegistrar, srv GreeterServer) {
+	s.RegisterService(&Greeter_ServiceDesc, srv)
 }
 
-func _CalculatorService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SumRequest)
+func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CalculatorServiceServer).Sum(ctx, in)
+		return srv.(GreeterServer).SayHello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shopdev.CalculatorService/Sum",
+		FullMethod: "/shopdev.Greeter/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CalculatorServiceServer).Sum(ctx, req.(*SumRequest))
+		return srv.(GreeterServer).SayHello(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// CalculatorService_ServiceDesc is the grpc.ServiceDesc for CalculatorService service.
+// Greeter_ServiceDesc is the grpc.ServiceDesc for Greeter service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var CalculatorService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "shopdev.CalculatorService",
-	HandlerType: (*CalculatorServiceServer)(nil),
+var Greeter_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "shopdev.Greeter",
+	HandlerType: (*GreeterServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Sum",
-			Handler:    _CalculatorService_Sum_Handler,
+			MethodName: "SayHello",
+			Handler:    _Greeter_SayHello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,4 +1,4 @@
-.PHONY:	install gen-grpc server document document2
+.PHONY:	install gen-grpc server document clean
 
 install:
 	go get github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway
@@ -11,7 +11,6 @@ gen-grpc:
         --go_out=${APP_HOME}/pkg \
         --go-grpc_out=${APP_HOME}/pkg \
         --go-grpc_opt=require_unimplemented_servers=false \
-      	google/api/*.proto \
         app/if/*.proto \
         app/model/*.proto \
         common/*.proto \
@@ -25,36 +24,27 @@ gen-grpc-gateway:
 			--go_out=${APP_HOME}/pkg \
 			--go-grpc_out=${APP_HOME}/pkg \
 			--go-grpc_opt=require_unimplemented_servers=false \
-		 	google/api/*.proto \
             app/if/*.proto \
             app/model/*.proto \
             common/*.proto \
             service/calculator_service.proto \
-            service/sample_service.proto
 
 		protoc -I./ \
 			  -I$(GOPATH)/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v2.16.0 \
 			  -I$(GOPATH)/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.16.0/third_party/googleapis \
 			  --grpc-gateway_out $(APP_HOME)/pkg \
 			  --grpc-gateway_opt logtostderr=true \
-			  --openapiv2_out=$(APP_HOME)/pkg \
-			  --openapiv2_opt=logtostderr=true \
 			  service/calculator_service.proto \
-			  service/sample_service.proto
 
 
 document:
 		protoc -I./ \
-			-I$(APP_HOME)/internal/pb/include \
         	-I$(GOPATH)/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v2.16.0 \
         	-I$(GOPATH)/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.16.0/third_party/googleapis \
-			--openapiv2_out ${APP_HOME}/pkg \
+			--openapiv2_out ${APP_HOME}/docs \
 			--openapiv2_opt=logtostderr=true \
-            service/calculator_service.proto \
-            service/sample_service.proto
+            service/calculator_service.proto
 
-document2:
-	protoc -I./ -I$(GOPATH)/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.16.0/third_party/googleapis --openapiv2_out=./doc --doc_out=./doc --doc_opt=html,index.html app.proto
-
-server:
-	go run cmd/main.go
+clean:
+	rm -rf ${APP_HOME}/pkg/pb/*
+	rm -rf ${APP_HOME}/docs/*

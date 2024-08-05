@@ -31,8 +31,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_CalculatorService_Sum_0(ctx context.Context, marshaler runtime.Marshaler, client CalculatorServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SumRequest
+func request_Greeter_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, client GreeterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq HelloRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -43,13 +43,13 @@ func request_CalculatorService_Sum_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Sum(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.SayHello(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_CalculatorService_Sum_0(ctx context.Context, marshaler runtime.Marshaler, server CalculatorServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SumRequest
+func local_request_Greeter_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, server GreeterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq HelloRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -60,18 +60,18 @@ func local_request_CalculatorService_Sum_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Sum(ctx, &protoReq)
+	msg, err := server.SayHello(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-// RegisterCalculatorServiceHandlerServer registers the http handlers for service CalculatorService to "mux".
-// UnaryRPC     :call CalculatorServiceServer directly.
+// RegisterGreeterHandlerServer registers the http handlers for service Greeter to "mux".
+// UnaryRPC     :call GreeterServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCalculatorServiceHandlerFromEndpoint instead.
-func RegisterCalculatorServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CalculatorServiceServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterGreeterHandlerFromEndpoint instead.
+func RegisterGreeterHandlerServer(ctx context.Context, mux *runtime.ServeMux, server GreeterServer) error {
 
-	mux.Handle("POST", pattern_CalculatorService_Sum_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Greeter_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -79,12 +79,12 @@ func RegisterCalculatorServiceHandlerServer(ctx context.Context, mux *runtime.Se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/shopdev.CalculatorService/Sum", runtime.WithHTTPPathPattern("/v1/sum"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/shopdev.Greeter/SayHello", runtime.WithHTTPPathPattern("/v1/example/echo"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CalculatorService_Sum_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Greeter_SayHello_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -92,16 +92,16 @@ func RegisterCalculatorServiceHandlerServer(ctx context.Context, mux *runtime.Se
 			return
 		}
 
-		forward_CalculatorService_Sum_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Greeter_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterCalculatorServiceHandlerFromEndpoint is same as RegisterCalculatorServiceHandler but
+// RegisterGreeterHandlerFromEndpoint is same as RegisterGreeterHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterCalculatorServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterGreeterHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.DialContext(ctx, endpoint, opts...)
 	if err != nil {
 		return err
@@ -121,41 +121,41 @@ func RegisterCalculatorServiceHandlerFromEndpoint(ctx context.Context, mux *runt
 		}()
 	}()
 
-	return RegisterCalculatorServiceHandler(ctx, mux, conn)
+	return RegisterGreeterHandler(ctx, mux, conn)
 }
 
-// RegisterCalculatorServiceHandler registers the http handlers for service CalculatorService to "mux".
+// RegisterGreeterHandler registers the http handlers for service Greeter to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterCalculatorServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterCalculatorServiceHandlerClient(ctx, mux, NewCalculatorServiceClient(conn))
+func RegisterGreeterHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterGreeterHandlerClient(ctx, mux, NewGreeterClient(conn))
 }
 
-// RegisterCalculatorServiceHandlerClient registers the http handlers for service CalculatorService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "CalculatorServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CalculatorServiceClient"
+// RegisterGreeterHandlerClient registers the http handlers for service Greeter
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "GreeterClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "GreeterClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "CalculatorServiceClient" to call the correct interceptors.
-func RegisterCalculatorServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CalculatorServiceClient) error {
+// "GreeterClient" to call the correct interceptors.
+func RegisterGreeterHandlerClient(ctx context.Context, mux *runtime.ServeMux, client GreeterClient) error {
 
-	mux.Handle("POST", pattern_CalculatorService_Sum_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Greeter_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/shopdev.CalculatorService/Sum", runtime.WithHTTPPathPattern("/v1/sum"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/shopdev.Greeter/SayHello", runtime.WithHTTPPathPattern("/v1/example/echo"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CalculatorService_Sum_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Greeter_SayHello_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_CalculatorService_Sum_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Greeter_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -163,9 +163,9 @@ func RegisterCalculatorServiceHandlerClient(ctx context.Context, mux *runtime.Se
 }
 
 var (
-	pattern_CalculatorService_Sum_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "sum"}, ""))
+	pattern_Greeter_SayHello_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "example", "echo"}, ""))
 )
 
 var (
-	forward_CalculatorService_Sum_0 = runtime.ForwardResponseMessage
+	forward_Greeter_SayHello_0 = runtime.ForwardResponseMessage
 )

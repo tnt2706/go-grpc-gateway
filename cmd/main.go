@@ -1,7 +1,9 @@
 package main
 
-import "grpc-gateway/cmd/grpc"
+import (
+	"grpc-gateway/cmd/server"
+)
 
 func main() {
-	grpc.StartGrpcServer()
+	server.StartGrpcServer()
 }
