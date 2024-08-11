@@ -15,7 +15,6 @@ gen-grpc:
         app/model/*.proto \
         common/*.proto \
         service/calculator_service.proto \
-        service/sample_service.proto
 
 gen-grpc-gateway:
 		protoc -I./ \

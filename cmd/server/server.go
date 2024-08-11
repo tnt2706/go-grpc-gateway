@@ -2,18 +2,22 @@ package server
 
 import (
 	"context"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/protobuf/encoding/protojson"
+	"errors"
+	"github.com/labstack/echo/v4"
 	"log"
 	"net"
 	"net/http"
 	"strings"
 
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/encoding/protojson"
+
+	"grpc-gateway/internal/service"
+	"grpc-gateway/pkg/pb"
+
 	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"grpc-gateway/internal/service"
-	"grpc-gateway/pkg/pb"
 )
 
 func withLogger(handler http.Handler) http.Handler {
@@ -37,6 +41,25 @@ func isHeaderAllowed(s string) (string, bool) {
 	return s, false
 }
 
+func setupRoutes(e *echo.Echo) {
+	e.GET("/health", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Server is running")
+	})
+
+	e.GET("/custom", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Custom route")
+	})
+
+	e.GET("/console", func(c echo.Context) error {
+		return c.Redirect(http.StatusTemporaryRedirect, "/console/")
+	})
+
+	e.GET("/*", func(c echo.Context) error {
+		return c.String(http.StatusNotFound, "")
+	})
+
+}
+
 func StartGrpcServer() {
 	// Create a listener on TCP port
 	lis, err := net.Listen("tcp", ":8080")
@@ -54,8 +77,10 @@ func StartGrpcServer() {
 		log.Fatalln(s.Serve(lis))
 	}()
 
+	ec := echo.New()
+
 	// creating mux for gRPC gateway. This will multiplex or route request different gRPC service
-	gwmux := runtime.NewServeMux(
+	mux := runtime.NewServeMux(
 		// convert header in response(going from gateway) from metadata received.
 		runtime.WithOutgoingHeaderMatcher(isHeaderAllowed),
 		runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
@@ -92,19 +117,21 @@ func StartGrpcServer() {
 		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(1024*1024*20), grpc.MaxCallSendMsgSize(1024*1024*20))}
 
 	// setting up a dail up for gRPC service by specifying endpoint/target url
-	err = pb.RegisterGreeterHandlerFromEndpoint(context.Background(), gwmux, "0.0.0.0:8080", opts)
+	err = pb.RegisterGreeterHandlerFromEndpoint(context.Background(), mux, "0.0.0.0:8080", opts)
 	if err != nil {
 		log.Fatalln("Failed to register gateway:", err)
 	}
 
-	// Creating a normal HTTP server
-	gwServer := &http.Server{
-		Addr:    ":8090",
-		Handler: gwmux,
-	}
+	setupRoutes(ec)
 
-	log.Println("Serving gRPC-Gateway on http://0.0.0.0:8090")
-	log.Fatalln(gwServer.ListenAndServe())
+	ec.Any("/api/*", func(c echo.Context) error {
+		mux.ServeHTTP(c.Response().Writer, c.Request())
+		return nil
+	})
+
+	if err := ec.Start(":8090"); !errors.Is(err, http.ErrServerClosed) {
+		log.Fatal(err)
+	}
 }
 
 func main() {
